@@ -12,7 +12,44 @@
         </span>
         <el-input
           v-model="form.email"
-          placeholder="请输入邮箱"
+          placeholder="邮箱"
+        ></el-input>
+      </el-form-item>
+
+      <!-- 昵称 -->
+      <el-form-item prop="nickname">
+        <span class="svg-container">
+          <i class="el-icon-chat-round"></i>
+        </span>
+        <el-input
+          v-model="form.nickname"
+          placeholder="昵称"
+        ></el-input>
+      </el-form-item>
+
+      <!-- 密码 -->
+      <el-form-item prop='password'>
+        <span class="svg-container">
+          <i class="el-icon-lock"></i>
+        </span>
+
+        <el-input
+          v-model="form.password"
+          placeholder="密码"
+          type="password"
+        ></el-input>
+      </el-form-item>
+
+      <!-- 确认密码 -->
+      <el-form-item prop="repassword">
+        <span class="svg-container">
+          <i class="el-icon-lock"></i>
+        </span>
+
+        <el-input
+          v-model="form.repassword"
+          placeholder="请再次输入密码"
+          type="password"
         ></el-input>
       </el-form-item>
 
@@ -25,9 +62,8 @@
           <i class="el-icon-user"></i>
         </span>
         <el-input
-          ref="captcha"
           v-model="form.captcha"
-          placeholder="请输入验证码"
+          placeholder="验证码"
         ></el-input>
       </el-form-item>
 
@@ -44,19 +80,57 @@
 </template>
 
 <script>
+import md5 from "md5"
 import { log } from 'util'
   export default {
     layout: 'login',
     data() {
+      const checkPassword = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入密码'))
+        } else {
+          if (this.form.repassword !== '') {
+            this.$refs.form.validateField('repassword')
+          }
+
+          callback()
+        }
+      }
+
+      const checkPassword2 = (rule, value, callback) => {
+        console.log('checkpassword2')
+        if (!value) {
+          return callback(new Error('请再次输入密码'))
+        } else if (this.form.password !== value) {
+          return callback(new Error('两次输入密码不一致'))
+        } else {
+          callback()
+        }
+      }
+
       return {
         form: {
-          email: '824201954@qq.com',
+          email: '824202954@qq.com',
+          nickname: '吾妻同行',
+          password: '123456',
+          repassword: '123456',
           captcha: ''
         },
         rules: {
           email: [
             { required: true, message: '请输入邮箱', trigger: 'blur' },
             { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+          ],
+          nickname: [
+            { required: true, message: '请输入昵称', trigger: 'blur' }
+          ],
+          password: [
+            // { required: true, message: '请输入密码', trigger: 'blur' }
+            { validator: checkPassword, trigger: 'blur' }
+          ],
+          repassword: [
+            // { required: true, message: '请再次输入密码', trigger: 'blur' }
+            { validator: checkPassword2, trigger: 'blur' }
           ],
           captcha: [
             { required: true, message: '请输入验证码', trigger: 'blur' } 
@@ -74,7 +148,14 @@ import { log } from 'util'
       handleRegister() {
         this.$refs.form.validate(valide => {
           if (valide) {
-              this.$http.post('/user/register', this.form)
+            const data = {
+              email: this.form.email,
+              nickname: this.form.nickname,
+              password: md5(this.form.password),    
+              captcha: this.form.captcha        
+            }
+
+            this.$http.post('/user/register', data)
               .then ( res => {
                 console.log('/user/register', res)
                 const { code } = res

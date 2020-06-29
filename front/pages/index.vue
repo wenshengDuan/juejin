@@ -11,7 +11,7 @@ import Logo from '~/components/Logo.vue'
 
 export default {
   async mounted() {
-    let ret = await this.$http.get('/usrinfo')
+    let ret = await this.$http.get('/user/info')
     console.log(ret)
   },
 

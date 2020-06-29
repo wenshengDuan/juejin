@@ -9,6 +9,9 @@ let service = axios.create({
 // @设置请求拦截器, 用于token鉴权 路由跳转
 service.interceptors.request.use(
   config => {
+    // 做token管理
+    const token = window.localStorage.getItem('token')
+    config.headers.common['Authorization'] = "Bearer " + token
     return config
   },
  err => {
