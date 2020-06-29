@@ -7,9 +7,13 @@ const HashSalt = 'beijin@123!#321'
 
 class UsrController extends Controller {
   async info() {
-    this.success({
-      name:'舒展'
-    })
+    // this.success({
+    //   name:'舒展'
+    // })
+    const {ctx} = this
+    const {email} = ctx.state
+    const user = await this.checkEmail(email)
+    this.success(user)
   }
 
   async captcha() {
@@ -34,7 +38,7 @@ class UsrController extends Controller {
     return user
   }
 
-  用户登录
+  // 用户登录
   async login() {
     const {ctx, app} = this
     const {email, password} = ctx.request.body
@@ -52,7 +56,7 @@ class UsrController extends Controller {
         email,
         nickname,
         _id: user._id
-      }, app.config.jwt.session, {
+      }, app.config.jwt.secret, {
         expiresIn: '60s' 
       })
 
