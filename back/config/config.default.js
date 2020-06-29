@@ -30,6 +30,15 @@ module.exports = appInfo => {
       csrf: {
         enable: false
       }
+    },
+    mongoose: {
+      client: {
+        url: 'mongodb://localhost:27017/jin',
+        options: {}
+      }
+    },
+    jwt: {
+      secret: 'gaojigongcs@133$#!'
     }
   };
 };
