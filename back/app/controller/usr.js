@@ -57,7 +57,7 @@ class UsrController extends Controller {
         nickname,
         _id: user._id
       }, app.config.jwt.secret, {
-        expiresIn: '60s' 
+        expiresIn: '1h' 
       })
 
       this.success({email, nickname, token})
