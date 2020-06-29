@@ -71,8 +71,9 @@ import { log } from 'util'
               email: this.form.email,
               password: md5(this.form.password),        
             }
-
-            this.$http.post('/user/login', data)
+            
+            this.$store.dispatch('user/login',data)
+            // this.$http.post('/user/login', data)
               .then ( res => {
                 console.log('/user/login', res)
                 const { code } = res

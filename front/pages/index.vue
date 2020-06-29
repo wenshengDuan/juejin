@@ -1,26 +1,49 @@
 <template>
   <div class="container">
     <div>
-      <logo />
+      <!-- <logo /> -->
+      {{$store.state}}
     </div>
   </div>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
-
+// import { createNamespacedHelpers } from "vuex"
+// const { mapMutations, mapActions } = createNamespacedHelpers('user')
+import { mapActions, mapMutations } from "vuex"
 export default {
   async mounted() {
     const token = window.localStorage.getItem("token")
-  
+    // const token = this.$store.state.user.token
     if (token) {
-      let ret = await this.$http.get('/user/info')
-      console.log(ret)
+      // let ret = await this.$http.get('/user/info')
+      // console.log(ret)
+      
+      // 模块直接调用方式
+      // this.$store.commit('user/SET_TOKEN', token)
+      
+      // 基于命名空间的辅组函数调用方式
+      // this.SET_TOKEN(token) 
+      
+      // 全局辅助函数调用方式
+      this.setToken(token)
+      this.getUserDetail()
+      // this.$store.dispatch('user/detail')
     }
   },
 
   components: {
-    Logo
+    // Logo
+  },
+  methods: {
+    ...mapMutations({
+      setToken: 'user/SET_TOKEN'
+    }),
+    ...mapActions({
+      getUserDetail: 'user/detail'
+    })
+    // ...mapMutations(['SET_TOKEN'])
   }
 }
 </script>
