@@ -160,7 +160,9 @@ import { log } from 'util'
                 console.log('/user/register', res)
                 const { code } = res
                 if (code === 0) {
+                  // 注册成功跳转登录页
                   this.$message.success(res.data)
+                  this.$router.push({path: '/login'})
                 } else {
                   this.$message.error(res.message)
                 }

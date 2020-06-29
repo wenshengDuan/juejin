@@ -11,8 +11,12 @@ import Logo from '~/components/Logo.vue'
 
 export default {
   async mounted() {
-    let ret = await this.$http.get('/user/info')
-    console.log(ret)
+    const token = window.localStorage.getItem("token")
+  
+    if (token) {
+      let ret = await this.$http.get('/user/info')
+      console.log(ret)
+    }
   },
 
   components: {
