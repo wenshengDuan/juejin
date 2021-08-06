@@ -45,6 +45,7 @@ import { mapState } from "vuex"
     }
   }
 </script>
+
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -64,7 +65,9 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-
+a {
+  text-decoration: none;
+}
 /* .button--green {
   display: inline-block;
   border-radius: 4px;
